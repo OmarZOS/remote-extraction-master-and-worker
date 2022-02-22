@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  redis:
+    container_name: remote_dictionary
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+  rabbit_mq:
+    container_name: rabbitmq-broker
+    image:  "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER="omar"
+      - RABBITMQ_DEFAULT_PASS="omar"
+      # - SPRING_RABBITMQ_HOST="rabbitmq-broker" #same as container Name
+  zos_context:
+    container_name: zos_context
+    build:  .
+    # image: scalable-context-aware-application_zos_context_1
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    volumes:
+      - .:/code
+    ports:
+      - "6060:6060"
+    environment:
+      - CONTEXT_RPC_PORT="6060"
+      - CONTEXT_RPC_HOST="localhost"
+      - RABBIT_MQ_HOST="localhost"
+      - RABBIT_MQ_USER="omar"
+      - RABBIT_MQ_PASSWORD="omar"
+      - RABBIT_MQ_PORT=5672
+      - REDIS_HOST="localhost"
+      - REDIS_PORT="6379"
+      - ZOS_CONTEXT_ID="1"
