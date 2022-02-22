@@ -19,11 +19,4 @@ Use this command to build and deploy the containers:
 
 
 
-### Progress
-    
-- [x] In between node communication.
-- [x] Stateless strategy instances.
-- [x] Context as an RPC service.
-- [x] Containerisation. (Dockerfile)
-- [x] Automation of deployment. (docker-compose)
-- [x] Smaller footprint. (fix alpine linux dependencies)
+
