@@ -1,39 +1,68 @@
+import subprocess
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 import json,os
-from multiprocessing import  Manager
+from multiprocessing import  Process
 import xmlrpc.client
-
-SERVING_PORT = int(os.getenv("EXTRACTOR_WORKER_PORT"))
-SERVING_HOST = str(os.getenv("EXTRACTOR_WORKER_HOST"))
-
-CONTEXT_HOST = str(os.getenv("CONTEXT_HOST"))
-CONTEXT_PORT = int(os.getenv("CONTEXT_PORT"))
+from locator import locator
+from constants import *
 
 current_tasks = [{"id":1}]
 
-url="http://{}:{}".format(CONTEXT_HOST,CONTEXT_PORT)
-context = xmlrpc.client.ServerProxy(url)
+urlProxy="http://{}:{}".format(PROXY_HOST,PROXY_PORT)
+extraction_proxy = xmlrpc.client.ServerProxy(urlProxy)
+print("Serving somewhere")
 
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
+try:
+    print("Serving at {}:{}".format(SERVING_HOST,SERVING_PORT))
+    # Create server
+    with SimpleXMLRPCServer((str(SERVING_HOST), int(SERVING_PORT)),
+                            requestHandler=RequestHandler) as server:
+        
+        server.register_introspection_functions()
+        
+        @server.register_function(name='subscribe_in_proxy')
+        def subscribe_in_proxy(self,model):#first things first
+            extraction_proxy.register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
+            return True
 
-# Create server
-with SimpleXMLRPCServer((SERVING_HOST, SERVING_PORT),
-                        requestHandler=RequestHandler) as server:
+        @server.register_function(name='change_proxy')
+        def change_proxy(self,proxy_host,proxy_port):#first things first
+            urlProxy="http://{}:{}".format(proxy_host,proxy_port)
+            extraction_proxy = xmlrpc.client.ServerProxy(urlProxy)
+            return True
 
-    server.register_introspection_functions()
+        # Setting a context variable
+        def setVariable(varname,value):
+            pass
+            # return context.set(varname,value)
+        server.register_function(setVariable, 'set')
+        
+        def subscribe_service(api,service_name,instance,json_info):
+            locator.availableServices[api][service_name]=json_info
+            # locator.setService("{}-{}".format(api,service_name),instance)
+            return True;
+        server.register_function(setVariable, 'subscribe_service')
+                
+        
+        @server.register_function(name='StartHarvestingData')
+        def StartHarvestingData(service,model):
+            try:
+                p = Process(target=locator.getService(service), args=(context,model,))
+                p.start()
+                return p.pid
+            
+            except Exception :
+                return False
+            #current_tasks is invloved, don't forget to pass context object
 
-    # Setting a context variable
-    def setVariable(varname,value):
-        return context.set(varname,value)
-    server.register_function(setVariable, 'set')
-    
-    @server.register_function(name='StartHarvestingData')
-    def StartHarvestingData(model):
-        #current_tasks is invloved, don't forget to pass context object
-        pass
+        extraction_proxy.register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
 
-    # Run the server's main loop
-    server.serve_forever()
+        # Run the server's main loop
+        server.serve_forever()
+except print(0):
+    pass
+

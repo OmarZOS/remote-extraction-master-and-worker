@@ -1,37 +1,78 @@
-version: "3.3"
+version: "3.5"
 services:
-  redis:
-    container_name: remote_dictionary
-    image: "redis:alpine"
+  extractor_proxy:
+    container_name: phoros_extractor_proxy
+    hostname: phoros_extractor_proxy
+    build:  proxy/.
+    image: omarzos/extractor_proxy
     ports:
-      - "6379:6379"
-  rabbit_mq:
-    container_name: rabbitmq-broker
-    image:  "rabbitmq:3-management"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+      - 6548:6060
     environment:
-      - RABBITMQ_DEFAULT_USER="omar"
-      - RABBITMQ_DEFAULT_PASS="omar"
-      # - SPRING_RABBITMQ_HOST="rabbitmq-broker" #same as container Name
-  zos_context:
-    container_name: zos_context
-    build:  .
-    # image: scalable-context-aware-application_zos_context_1
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
-    volumes:
-      - .:/code
+      - RABBIT_MQ_USER=omar
+      - RABBIT_MQ_PASSWORD=omar
+      - CONTEXT_RPC_HOST=zos_context
+      - CONTEXT_RPC_PORT=6061
+      - PROXY_HOST=phoros_extractor_proxy
+      - PROXY_PORT=6061
+    networks:
+      - phoros_net
+  extractor_worker1:
+    container_name: phoros_extractor_worker1
+    hostname: phoros_extractor_worker1
+    depends_on:
+      - extractor_proxy
+    build:  worker/.
+    image: omarzos/extractor_worker
     ports:
-      - "6060:6060"
+      - 6549:6060
     environment:
-      - CONTEXT_RPC_PORT="6060"
-      - CONTEXT_RPC_HOST="localhost"
-      - RABBIT_MQ_HOST="localhost"
-      - RABBIT_MQ_USER="omar"
-      - RABBIT_MQ_PASSWORD="omar"
+      - RABBIT_MQ_USER=omar
+      - RABBIT_MQ_PASSWORD=omar
+      - PROXY_HOST=phoros_extractor_proxy
+      - PROXY_PORT=6061
+      - EXTRACTOR_WORKER_HOST=phoros_extractor_worker1
+      - EXTRACTOR_WORKER_PORT=6060
+      - RABBIT_MQ_HOST=rabbitmq-broker
       - RABBIT_MQ_PORT=5672
-      - REDIS_HOST="localhost"
-      - REDIS_PORT="6379"
-      - ZOS_CONTEXT_ID="1"
+      - RABBIT_MQ_EXCHANGE=transform
+    networks:
+      - phoros_net
+
+networks:
+  phoros_net:
+    external:  true
+
+
+# the following is made for unit tests..
+  
+  # context_net:
+  #   external: true
+        
+  # zos_context:
+  #   container_name: zos_context
+  #   image: scalable-context-aware-application_zos_context
+  #   ports:
+  #     - "6061:6060"
+  #   environment:
+  #     - CONTEXT_RPC_PORT=6060
+  #     - CONTEXT_RPC_HOST=zos_context
+  #     - RABBIT_MQ_HOST=rabbitmq-broker
+  #     - RABBIT_MQ_USER=omar
+  #     - RABBIT_MQ_PASSWORD=omar
+  #     - RABBIT_MQ_PORT=5672
+  #     - REDIS_HOST=remote_dictionary
+  #     - REDIS_PORT=6379
+  #     - ZOS_CONTEXT_ID=1
+  # rabbit_mq:
+  #   container_name: rabbitmq-broker
+  #   image:  "rabbitmq:3-management"
+  #   hostname: rabbitmq-broker
+  #   ports:
+  #     - 5672:5672
+  #     - 15672:15672
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=omar
+  #     - RABBITMQ_DEFAULT_PASS=omar
+  #   networks:
+  #     - context_net
+  #     - phoros_net
