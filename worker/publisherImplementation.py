@@ -6,7 +6,7 @@ import pika,os
 
 from publishingService.publishingService import publishingService
 from pika.exchange_type import ExchangeType
-
+from constants import *
 
 
 RMQ_HOST = str(os.getenv("RABBIT_MQ_HOST"))

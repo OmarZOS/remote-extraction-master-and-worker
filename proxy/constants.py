@@ -11,4 +11,3 @@ SERVING_PORT = int(os.getenv("PROXY_PORT"))
 
 TWITTER_TOKEN_IDENTIFIER = "TwitterCredentials"
 
-

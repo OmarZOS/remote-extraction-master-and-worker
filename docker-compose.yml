@@ -29,7 +29,9 @@ services:
       - RABBIT_MQ_USER=omar
       - RABBIT_MQ_PASSWORD=omar
       - PROXY_HOST=phoros_extractor_proxy
-      - PROXY_PORT=6061
+      - PROXY_PORT=6060
+      - CONTEXT_RPC_HOST=zos_context
+      - CONTEXT_RPC_PORT=6061
       - EXTRACTOR_WORKER_HOST=phoros_extractor_worker1
       - EXTRACTOR_WORKER_PORT=6060
       - RABBIT_MQ_HOST=rabbitmq-broker

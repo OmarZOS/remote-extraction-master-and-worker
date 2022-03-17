@@ -39,12 +39,16 @@ class TwitterExtractor(NetworkExtractor):
     # 2680659782
     # 366091257
 
-    def __init__(self,context,structure):
+    
+
+
+    def __init__(self,context,structure,roadmap,publisher):
         
         ######################## should have been done in the abstraction
         
         self.fullStructure = structure
         self.context = context
+        self.publisher = publisher
         
         ########################
         
@@ -85,8 +89,11 @@ class TwitterExtractor(NetworkExtractor):
 
         print("Extraction complete.")
         self.save_json("Graph.json",self.graph)
+        
         payload = json.loads(json_graph.dumps(self.graph))
         payload["road_map"] = []
+        
+        # delivering payload
         locator.getPublisher().publish("Twitter",json.dumps(payload))
 
     def getAuth(self):

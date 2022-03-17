@@ -13,6 +13,10 @@ urlProxy="http://{}:{}".format(PROXY_HOST,PROXY_PORT)
 extraction_proxy = xmlrpc.client.ServerProxy(urlProxy)
 print("Serving somewhere")
 
+url_context="http://{}:{}".format(CONTEXT_HOST,CONTEXT_PORT)
+context = xmlrpc.client.ServerProxy(url_context)
+
+
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
@@ -43,7 +47,7 @@ try:
         
         def subscribe_service(api,service_name,instance,json_info):
             locator.availableServices[api][service_name]=json_info
-            # locator.setService("{}-{}".format(api,service_name),instance)
+            locator.setService("{}-{}".format(api,service_name),instance)
             return True;
         server.register_function(setVariable, 'subscribe_service')
                 
@@ -51,7 +55,8 @@ try:
         @server.register_function(name='StartHarvestingData')
         def StartHarvestingData(service,model):
             try:
-                p = Process(target=locator.getService(service), args=(context,model,))
+                p = Process(target=locator.getService(service),
+                            args=(context,model,locator.getPublisher(),))
                 p.start()
                 return p.pid
             

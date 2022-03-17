@@ -20,9 +20,17 @@ Use this command to build and deploy the containers:
 
 ### Progress
     
-- [x] In between node communication.
-- [x] Stateless strategy instances.
-- [x] Context as an RPC service.
-- [x] Containerisation. (Dockerfile)
-- [x] Automation of deployment. (docker-compose)
-- [x] Smaller footprint. (fix alpine linux dependencies)
+
+- [ ] Proxy server. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/67)
+  - [ ] REST communication for updates.
+    - [ ] Lookup transformer services.
+    - [ ] Lookup available scripts.
+    - [ ] Additivity of more scripts. 
+  - [x] Submit tasks to workers.
+- [x] In between node communication. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/67)
+- [ ] Extraction template. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/50)
+  - [x] Sending data to data transformers.
+  - [ ] Dynamic script loading.
+- [x] Containerisation. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/90)
+  - [x] Automation of deployment. (docker-compose)
+  - [x] Smaller footprint. (fix alpine linux dependencies)

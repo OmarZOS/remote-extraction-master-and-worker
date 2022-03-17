@@ -9,7 +9,7 @@ class locator(object):
     
     # services = {}
     # services["Twitter-service1"] = TwitterExtractor
-    publisher = publisherImplementation("transform",user=RMQ_USER,password=RMQ_PASSWORD)
+    publisher = publisherImplementation(RMQ_EXCHANGE,user=RMQ_USER,password=RMQ_PASSWORD)
 
     with open("extractors.json") as f:
         availableServices = json.load(f)
