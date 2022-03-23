@@ -5,36 +5,26 @@ def initialiseTwitterTokens(context,TWITTER_TOKENS_IDENTIFIER):
     import json
     import os
 
-    creds_0 = {"TWEET_CONSUM":str(os.getenv("TWEET_CONSUM")),
-                "TWEET_SECRET":str(os.getenv("TWEET_SECRET")),
-                "TWEET_KEY":str(os.getenv("TWEET_KEY")),
-                "TWEET_ACCESS_SECRET":str(os.getenv("TWEET_ACCESS_SECRET"))}
-                
+    tweet_consums = str(os.getenv("TWEET_CONSUM")).split(",")
+    tweet_secrets = str(os.getenv("TWEET_SECRET")).split(",")
+    tweet_keys = str(os.getenv("TWEET_KEY")).split(",")
+    tweet_access_secrets = str(os.getenv("TWEET_ACCESS_SECRET")).split(",")
 
-    creds_1 = {"TWEET_CONSUM":str(os.getenv("TWEET_CONSUM1")),
-                "TWEET_SECRET":str(os.getenv("TWEET_SECRET1")),
-                "TWEET_KEY":str(os.getenv("TWEET_KEY1")),
-                "TWEET_ACCESS_SECRET":str(os.getenv("TWEET_ACCESS_SECRET1"))
-                }
+    creds_count = min(  len(tweet_consums),
+                        len(tweet_secrets),
+                        len(tweet_keys),
+                        len(tweet_access_secrets))  
+    
+    for i in range(creds_count):
+        creds = json.dumps({
+                "TWEET_CONSUM":tweet_consums[i],
+                "TWEET_SECRET":tweet_secrets[i],
+                "TWEET_KEY":tweet_keys[i],
+                "TWEET_ACCESS_SECRET":tweet_access_secrets[i]
+            })
+        context.set(TWITTER_TOKENS_IDENTIFIER,creds)
 
-    creds_2 = {"TWEET_CONSUM":str(os.getenv("TWEET_CONSUM2")),
-                "TWEET_SECRET":str(os.getenv("TWEET_SECRET2")),
-                "TWEET_KEY":str(os.getenv("TWEET_KEY2")),
-                "TWEET_ACCESS_SECRET":str(os.getenv("TWEET_ACCESS_SECRET2"))
-                }
+def choose_service(context,model,available_services): #------- TODO ----------------
+    pass
+    
 
-    creds_3 = {"TWEET_CONSUM":str(os.getenv("TWEET_CONSUM3")),
-                "TWEET_SECRET":str(os.getenv("TWEET_SECRET3")),
-                "TWEET_KEY":str(os.getenv("TWEET_KEY3")),
-                "TWEET_ACCESS_SECRET":str(os.getenv("TWEET_ACCESS_SECRET3"))
-                }
-
-    creds_0 = json.dumps(creds_0)
-    creds_1 = json.dumps(creds_1)
-    creds_2 = json.dumps(creds_2)
-    creds_3 = json.dumps(creds_3)
-
-    context.set(TWITTER_TOKENS_IDENTIFIER,creds_0)
-    context.set(TWITTER_TOKENS_IDENTIFIER,creds_1)
-    context.set(TWITTER_TOKENS_IDENTIFIER,creds_2)
-    context.set(TWITTER_TOKENS_IDENTIFIER,creds_3)

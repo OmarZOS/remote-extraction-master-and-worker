@@ -12,7 +12,7 @@ class extractorProxy(API_ExtractionProxy):
     def __init__(self,args):
         initialiseTwitterTokens(self.context,TWITTER_TOKEN_IDENTIFIER)
 
-    def StartHarvestingData(self,model):
+    def start_harvesting_data(self,model):
         pass
     
     def cancelHarvesting(id):

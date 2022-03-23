@@ -20,9 +20,9 @@ class locator(object):
         return self.publisher
     
     @staticmethod
-    def setService(self,service_name,instance):
-        self.availableServices[service_name] = instance
+    def setService(self,api_name,service_name,instance):
+        self.availableServices[api_name][service_name] = instance
     
     @staticmethod
-    def getService(self,service_name):
-        return self.availableServices[service_name]
+    def getService(self,api_name,service_name):
+        return self.availableServices[api_name][service_name]

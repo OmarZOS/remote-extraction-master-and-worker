@@ -4,7 +4,7 @@ WORKDIR /code
 
 # Install python/pip
 
-RUN pip3 install pika
+RUN pip3 install -r requirements.txt
 
 COPY . /code
 

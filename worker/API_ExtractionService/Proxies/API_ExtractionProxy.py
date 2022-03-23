@@ -7,7 +7,7 @@ class API_ExtractionProxy(API_ExtractionService):
     view = None
     apiName=""
     
-    def StartHarvestingData(self,model):
+    def start_harvesting_data(self,model):
         pass
     
     def cancelHarvesting(id):

@@ -53,7 +53,7 @@ context.set("Friend_Count_Limit","200")
 
 print(context.get("Twitter_User_ID"))
 
-# worker.StartHarvestingData("Twitter-service1",{"user":["id"]})
+# worker.start_harvesting_data("Twitter-service1",{"user":["id"]})
 
 
 

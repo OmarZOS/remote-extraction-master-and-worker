@@ -6,16 +6,16 @@ services:
     build:  proxy/.
     image: omarzos/extractor_proxy
     ports:
-      - 6548:6060
+      - ${PROXY_PORT_EXT}:${PROXY_PORT_EXT}
     environment:
-      - RABBIT_MQ_USER=omar
-      - RABBIT_MQ_PASSWORD=omar
       - CONTEXT_RPC_HOST=zos_context
-      - CONTEXT_RPC_PORT=6061
       - PROXY_HOST=phoros_extractor_proxy
-      - PROXY_PORT=6061
+      - CONTEXT_RPC_PORT=${CONTEXT_PORT}
+      - PROXY_PORT=${PROXY_PORT_EXT}
     networks:
       - phoros_net
+    volumes:
+      - ./proxy/:/code
   extractor_worker1:
     container_name: phoros_extractor_worker1
     hostname: phoros_extractor_worker1
@@ -23,25 +23,30 @@ services:
       - extractor_proxy
     build:  worker/.
     image: omarzos/extractor_worker
-    ports:
-      - 6549:6060
+    ports: 
+      - ${WORKER1_PORT}:${WORKER1_PORT}
     environment:
       - RABBIT_MQ_USER=omar
       - RABBIT_MQ_PASSWORD=omar
-      - PROXY_HOST=phoros_extractor_proxy
-      - PROXY_PORT=6060
-      - CONTEXT_RPC_HOST=zos_context
-      - CONTEXT_RPC_PORT=6061
-      - EXTRACTOR_WORKER_HOST=phoros_extractor_worker1
-      - EXTRACTOR_WORKER_PORT=6060
       - RABBIT_MQ_HOST=rabbitmq-broker
       - RABBIT_MQ_PORT=5672
       - RABBIT_MQ_EXCHANGE=transform
+      - PROXY_HOST=phoros_extractor_proxy
+      - CONTEXT_RPC_HOST=zos_context
+      - EXTRACTOR_WORKER_HOST=phoros_extractor_worker1
+      - PROXY_PORT=${PROXY_PORT_EXT}
+      - CONTEXT_RPC_PORT=${CONTEXT_PORT}
+      - EXTRACTOR_WORKER_PORT=${WORKER1_PORT}
     networks:
       - phoros_net
+      - phoros_public_net
+    volumes:
+      - ./worker/:/code
 
 networks:
   phoros_net:
+    external:  true
+  phoros_public_net:
     external:  true
 
 

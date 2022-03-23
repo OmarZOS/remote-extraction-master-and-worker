@@ -42,7 +42,7 @@ class TwitterExtractor(NetworkExtractor):
     
 
 
-    def __init__(self,context,structure,roadmap,publisher):
+    def __init__(self,context,structure,publisher,roadmap=[]):
         
         ######################## should have been done in the abstraction
         
