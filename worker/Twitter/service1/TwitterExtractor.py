@@ -43,7 +43,7 @@ class TwitterExtractor(NetworkExtractor):
 
     @NetworkExtractor.data_publisher
     def __init__(self,context,structure,publisher,roadmap):
-        self.super().__init__(context,structure,publisher,roadmap)
+        self.super().__init__("Twitter",context,structure,publisher,roadmap)
         
         self.graph = nx.DiGraph(self.createGraph())
 
