@@ -41,7 +41,6 @@ class NetworkExtractor:
     # def proxy(self, prox : API_ExtractionProxy):
     #     self.myProxy = prox
     
-
     @property
     def getProxy(self):
         return self.proxy  

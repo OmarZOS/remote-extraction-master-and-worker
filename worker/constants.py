@@ -15,3 +15,5 @@ TWITTER_TOKEN_IDENTIFIER = "TwitterCredentials"
 
 CONTEXT_HOST = os.getenv("CONTEXT_RPC_HOST")
 CONTEXT_PORT = os.getenv("CONTEXT_RPC_PORT")
+
+PUBLISH_ERROR = "Error while trying to publish data"

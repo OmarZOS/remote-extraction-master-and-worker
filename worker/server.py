@@ -20,7 +20,6 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
 print("Serving at {}:{}".format(SERVING_HOST,SERVING_PORT))
 print("binding to ")
 
-
 # Create server
 with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
                         requestHandler=RequestHandler) as server:

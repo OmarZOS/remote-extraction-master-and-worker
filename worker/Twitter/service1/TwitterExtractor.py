@@ -39,8 +39,6 @@ class TwitterExtractor(NetworkExtractor):
     # 2680659782
     # 366091257
 
-    
-
     @NetworkExtractor.data_publisher
     def __init__(self,context,structure,publisher,roadmap):
         self.super().__init__("Twitter",context,structure,publisher,roadmap)
