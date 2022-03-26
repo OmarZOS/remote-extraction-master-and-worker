@@ -8,7 +8,9 @@ class publishingService(ABC):
     @abstractmethod
     def updateVariable(self,**kwargs):
         pass
-        
+    @abstractmethod
+    def publish(self,routeName,data):
+        pass
 
     
 

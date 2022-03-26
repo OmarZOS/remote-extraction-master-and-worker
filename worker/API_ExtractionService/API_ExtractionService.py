@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-from matplotlib.pyplot import get
-
 class API_ExtractionService(ABC):
     def __init__(self,apiName ):
         self.apiName=apiName
