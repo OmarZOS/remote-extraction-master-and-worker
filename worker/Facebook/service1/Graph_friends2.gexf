@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2022-03-22">
+    <creator>NetworkX 2.7</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <attributes mode="static" class="edge">
+      <attribute id="11" title="link_type" type="string" />
+    </attributes>
+    <attributes mode="static" class="node">
+      <attribute id="0" title="checked" type="long" />
+      <attribute id="1" title="Name" type="string" />
+      <attribute id="2" title="Friend_count" type="string" />
+      <attribute id="3" title="Follower_count" type="string" />
+      <attribute id="4" title="type" type="string" />
+      <attribute id="5" title="About" type="string" />
+      <attribute id="6" title="name" type="string" />
+      <attribute id="7" title="content1" type="string" />
+      <attribute id="8" title="time" type="string" />
+      <attribute id="9" title="reactions" type="string" />
+      <attribute id="10" title="comment_count" type="string" />
+    </attributes>
+    <nodes>
+      <node id="100012000482675" label="100012000482675">
+        <attvalues>
+          <attvalue for="0" value="1" />
+          <attvalue for="1" value="Kã Rïm" />
+          <attvalue for="2" value="1" />
+          <attvalue for="3" value="None" />
+          <attvalue for="4" value="user" />
+        </attvalues>
+      </node>
+      <node id="100013663841530" label="abdo.sidiali">
+        <attvalues>
+          <attvalue for="0" value="0" />
+          <attvalue for="4" value="user" />
+          <attvalue for="1" value="Abdo Sidiali" />
+          <attvalue for="2" value="429" />
+          <attvalue for="3" value="None" />
+        </attvalues>
+      </node>
+      <node id="100029075747371" label="amrouche.mohkanari">
+        <attvalues>
+          <attvalue for="0" value="0" />
+          <attvalue for="4" value="user" />
+          <attvalue for="1" value="Amrouche La Mige" />
+          <attvalue for="2" value="212" />
+          <attvalue for="3" value="None" />
+        </attvalues>
+      </node>
+      <node id="100078611031473" label="100078611031473">
+        <attvalues>
+          <attvalue for="0" value="0" />
+          <attvalue for="4" value="user" />
+          <attvalue for="1" value="Ano Nyme" />
+          <attvalue for="2" value="2" />
+          <attvalue for="3" value="None" />
+          <attvalue for="5" value="Write about yourself" />
+        </attvalues>
+      </node>
+      <node id="100006905417174" label="100006905417174">
+        <attvalues>
+          <attvalue for="0" value="0" />
+          <attvalue for="4" value="user" />
+          <attvalue for="1" value="Ýăş Šeŗ" />
+          <attvalue for="2" value="252" />
+          <attvalue for="3" value="None" />
+        </attvalues>
+      </node>
+      <node id="1100012000482675" label="1100012000482675">
+        <attvalues>
+          <attvalue for="6" value="Kã Rïm" />
+          <attvalue for="7" value="Amin yarbi al3almin" />
+          <attvalue for="8" value="3 novembre 2020" />
+          <attvalue for="9" value="66" />
+          <attvalue for="10" value="89 commentaires" />
+          <attvalue for="4" value="post" />
+        </attvalues>
+      </node>
+      <node id="2100012000482675" label="2100012000482675">
+        <attvalues>
+          <attvalue for="6" value="Kã Rïm" />
+          <attvalue for="8" value="6 mars 2020" />
+          <attvalue for="9" value="" />
+          <attvalue for="10" value="" />
+          <attvalue for="4" value="post" />
+        </attvalues>
+      </node>
+      <node id="3100012000482675" label="3100012000482675">
+        <attvalues>
+          <attvalue for="6" value="Kã Rïm" />
+          <attvalue for="7" value="Ak hata hbbhfdk" />
+          <attvalue for="8" value="27 octobre 2019" />
+          <attvalue for="9" value="43" />
+          <attvalue for="10" value="9 commentaires" />
+          <attvalue for="4" value="post" />
+        </attvalues>
+      </node>
+      <node id="4100012000482675" label="4100012000482675">
+        <attvalues>
+          <attvalue for="6" value="Kã Rïm" />
+          <attvalue for="7" value="Dapa7po7 aki sejji rebbi" />
+          <attvalue for="8" value="8 juin 2019" />
+          <attvalue for="9" value="90" />
+          <attvalue for="10" value="40 commentaires" />
+          <attvalue for="4" value="post" />
+        </attvalues>
+      </node>
+      <node id="5100012000482675" label="5100012000482675">
+        <attvalues>
+          <attvalue for="6" value="Kã Rïm" />
+          <attvalue for="8" value="1 mars 2019" />
+          <attvalue for="9" value="69" />
+          <attvalue for="10" value="45 commentaires" />
+          <attvalue for="4" value="post" />
+        </attvalues>
+      </node>
+      <node id="6100012000482675" label="6100012000482675">
+        <attvalues>
+          <attvalue for="6" value="Kã Rïm" />
+          <attvalue for="7" value="Amin yarbi al3almin" />
+          <attvalue for="8" value="3 novembre 2020" />
+          <attvalue for="9" value="66" />
+          <attvalue for="10" value="89 commentaires" />
+          <attvalue for="4" value="post" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="100012000482675" target="100013663841530" id="0">
+        <attvalues>
+          <attvalue for="11" value="friend" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="100029075747371" id="1">
+        <attvalues>
+          <attvalue for="11" value="friend" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="100078611031473" id="2">
+        <attvalues>
+          <attvalue for="11" value="friend" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="100006905417174" id="3">
+        <attvalues>
+          <attvalue for="11" value="friend" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="1100012000482675" id="4">
+        <attvalues>
+          <attvalue for="11" value="publisher" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="2100012000482675" id="5">
+        <attvalues>
+          <attvalue for="11" value="publisher" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="3100012000482675" id="6">
+        <attvalues>
+          <attvalue for="11" value="publisher" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="4100012000482675" id="7">
+        <attvalues>
+          <attvalue for="11" value="publisher" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="5100012000482675" id="8">
+        <attvalues>
+          <attvalue for="11" value="publisher" />
+        </attvalues>
+      </edge>
+      <edge source="100012000482675" target="6100012000482675" id="9">
+        <attvalues>
+          <attvalue for="11" value="publisher" />
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
