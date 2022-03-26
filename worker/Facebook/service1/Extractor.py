@@ -1,5 +1,6 @@
 
 from asyncio.windows_events import NULL
+from API_ExtractionService.Network_Extractor import Network_Extractor
 import json
 from click import option
 from facebook_scraper import get_posts,get_friends,get_profile
@@ -14,20 +15,23 @@ from get_data import get_driver,get_friends_user,get_id,get_user_name_password
 from networkx.readwrite import json_graph
 
 
-class Extractor:
+class Extractor(NetworkExtractor):
  
  
-    file_graphe=''
     context=None
     Schema=[]
     graphe=NULL
-    def __init__(self,file_graphe,context,Schema,cookies):
+    def __init__(self,context,Schema,publisher,roadmap):
         print("Extractors")
-         
-      
-        self.file_graphe=file_graphe
+        self.super().__init__("Facebook",context,Schema,publisher,roadmap)
+        
         self.context=context
         self.Schema=Schema
+        try:
+
+            cookies=list(context.get("Fb_cookies")   )
+        except Exception as ex:
+            print(ex)
 
     
     def save_json(self,filename,graph):
@@ -42,8 +46,8 @@ class Extractor:
         self.graphe=g
 
         
-     
-    def create_Graphe_friends(self,file_graphe,context,Schema,cookies):
+    @NetworkExtractor.data_publisher
+    def create_Graphe_friends(self,context,Schema,cookies):
        
 
         count_parsed=0
@@ -61,8 +65,15 @@ class Extractor:
                                             
                                         'checked' :0 ,
                                             
-                                        } )])
-        profile=get_profile(account,cookies=cookies[key])
+      
+                                            } )])
+        try:
+            profile=get_profile(account)
+        except Exception as ex:
+             profile=get_profile(account,cookies=cookies)
+
+               
+
         key=(key+1)%len(cookies)
          
         for attr in Schema['user']:
@@ -80,12 +91,10 @@ class Extractor:
 
                 i = 0
                 while (i < len(Nodeslist)):
-                   #print(len(Nodeslist))
-                   #print(Nodeslist[i])
+                   
                    v = Nodeslist[i]
                    i += 1
-                   print(i)
-                   print(v)
+                   
                    if  Graphe.nodes[v]['checked']==0 :
                          
                         Graphe.nodes[v]['checked']=1
@@ -94,12 +103,13 @@ class Extractor:
                                   
                         limit_friend=context.limit_friends
                         list_friends=get_friends_user(email,password,v,limit_friend) 
-                        #print(len(list_friends))
-                        #print(list_friends)
-                                
+                        
                         #Add friends
+                        try:
                             
-                        Add_friends(Graphe,file_graphe,list_friends,limit_friend,Schema['user'],v,cookies)
+                             Add_friends(Graphe,list_friends,limit_friend,Schema['user'],v,cookies)
+                        except Exception as ex:
+                            print(ex)
                          
 
                         # Add Post
@@ -107,60 +117,48 @@ class Extractor:
                              
 
                             limit_posts=context.limit_posts
-                            Add_posts(email,password,account,Schema,Graphe,file_graphe,limit_posts, cookies)
-                            time.sleep(2)
+                            try:
+                                Add_posts(email,password,account,Schema,Graphe,limit_posts, cookies)
+                                time.sleep(2)
+                            except Exception as ex:
+                                print(ex)
 
-                   print('change nodelist')
                    count_parsed=count_parsed+1
-                   Nodeslist = [v for v in Graphe.nodes()]
-                   print( context.max_pars)
-                   print(len(Nodeslist))
-                   print(context.post)
-                   print(count_parsed)
+                   
                    if count_parsed==context.max_pars:
                         print("Extraction complete...........*")
-                        # Get Graph
-                        # self.graphe=
+                        
                         self.set_graph(Graphe)
                         final_graph=self.get_graph()
-                        self.save_json(file_graphe+".json",final_graph)
+                        #self.save_json(file_graphe+".json",final_graph)
                         json=json_graph.node_link_data(self.graphe)
                          
-                            
-                         
-                        print("dateeien")
-                        print(json)
+                       # print(json)
                         payload = json
                         payload["road_map"] = []
                         break
-                        
         
                       # delivering payload
                       # locator.getPublisher().publish("Twitter",json.dumps(payload))
-                   print("Sleeeeeeeeeep---*--*-*-*-*-*-*--*--*")
                     
                 
                    time.sleep(3)
-                print("alialaiai")
                 self.set_graph(Graphe)
                 final_graph=self.get_graph()
-                self.save_json(file_graphe+".json",final_graph)
-                loaded_json = json.loads(file_graphe+".json")
-                #dateien = json_graph(Graphe)
-                print("dateeien")
-                print(loaded_json)
-                payload = loaded_json
+                json=json_graph.node_link_data(self.graphe)
+                         
+                       # print(json)
+                payload = json
                 payload["road_map"] = []
+                
                                      
-                        # delivering payload
-                        # locator.getPublisher().publish("Twitter",json.dumps(payload)
 
             except Exception as ex:
                 print("ops")
                 print(ex)     
 
 
-    def create_Graphe_group(self,file_graphe,context,Schema,cookies):
+    def create_Graphe_group(self,context,Schema,cookies):
         count_parsed=0
         email=context. keys['email']
         password=context. keys=['password']
@@ -177,16 +175,7 @@ class Extractor:
 
                                             
                                         } )])
-        """profile_group=get_group_info(account,cookies=cookies[key])
-        key=(key+1)%len(cookies)
-            
-            
-        print(key)
-        for attr in Schema['group']:
-            if attr in profile_group.keys():
-             
-              nx.set_node_attributes(Graphe, name=attr, values=str(profile_group[attr]))
-           """
+        
         if context.group:
 
             print("group scraping")
@@ -197,8 +186,7 @@ class Extractor:
 
                 i = 0
                 while (i < len(Nodeslist)):
-                   print(len(Nodeslist))
-                   print(Nodeslist[i])
+                   
                    v = Nodeslist[i]
                    i += 1
                    if  Graphe.nodes[v]['checked']==0 :
@@ -210,20 +198,21 @@ class Extractor:
                         # Add Post
                         if context.post==True:
                             limit_posts=context.limit_posts
-                            Add_posts(email,password,account,Schema,Graphe,file_graphe,limit_posts, cookies)
+                            Add_posts(email,password,account,Schema,Graphe, limit_posts, cookies)
                             time.sleep(2)
-
-                   print('change nodlist')
+                    # val max==1
                    count_parsed=count_parsed+1
-                   Nodeslist = [v for v in Graphe.nodes()]
-                   print(len(Nodeslist))
-                   if count_parsed==context.max_pars:
-                       print("end of extraction")
-                       self.save_json(file_graphe,self.graph)
-        
-                       payload = json.loads(json_graph.dumps(self.graph))
-                       payload["road_map"] = []
-        
+                   if count_parsed==1:
+                         
+                        self.set_graph(Graphe)
+                        final_graph=self.get_graph()
+                        #self.save_json(file_graphe+".json",final_graph)
+                        json=json_graph.node_link_data(self.graphe)
+                                
+                        payload = json
+                        payload["road_map"] = []
+                        break
+                      
                       # delivering payload
                       # locator.getPublisher().publish("Twitter",json.dumps(payload))
 
