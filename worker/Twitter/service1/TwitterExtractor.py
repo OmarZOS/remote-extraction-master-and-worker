@@ -41,26 +41,11 @@ class TwitterExtractor(NetworkExtractor):
 
     
 
-
-    def __init__(self,context,structure,publisher,roadmap=[]):
-        
-        ######################## should have been done in the abstraction
-        
-        self.fullStructure = structure
-        self.context = context
-        self.publisher = publisher
-        
-        ########################
+    @NetworkExtractor.data_publisher
+    def __init__(self,context,structure,publisher,roadmap):
+        self.super().__init__(context,structure,publisher,roadmap)
         
         self.graph = nx.DiGraph(self.createGraph())
-
-        # firstUserID = self.context.get("Twitter_User_ID")
-        
-        # firstUser = self.api.get_user(user_id=firstUserID)
-
-        # if self.graph.number_of_nodes() ==0 :
-        # UserExtractor.crawlUser(UserExtractor,api=self.api,graph=self.graph,fullSchema=self.fullStructure,userQueue=userQueue,coordinatesQueue=coordinatesQueue,placeQueue=placeQueue,urlQueue=urlQueue,mediaQueue=mediaQueue,tweetQueue=tweetQueue)
-        #queueing before threading 
 
         userAgent = Thread(target=UserExtractor.crawlUser, args=(self,context,self.graph,self.fullStructure,))
         userAgent.setDaemon(True)
@@ -87,14 +72,10 @@ class TwitterExtractor(NetworkExtractor):
         # mediaAgent.setDaemon(True)
         # mediaAgent.start()
 
-        print("Extraction complete.")
-        self.save_json("Graph.json",self.graph)
+        # print("Extraction complete.")
+        # self.save_json("Graph.json",self.graph)
         
-        payload = json.loads(json_graph.dumps(self.graph))
-        payload["road_map"] = []
         
-        # delivering payload
-        locator.getPublisher().publish("Twitter",json.dumps(payload))
 
     def getAuth(self):
         creds = json.loads(self.context.get("TwitterCredentials"))

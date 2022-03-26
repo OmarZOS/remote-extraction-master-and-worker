@@ -1,2 +1,4 @@
 pika==1.2.0
-tweepy
+networkx==2.7.1
+tweepy==4.8.0
+

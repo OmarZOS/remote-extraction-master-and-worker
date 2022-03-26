@@ -43,43 +43,43 @@ services:
     volumes:
       - ./worker/:/code
 
+
+# the following is made for unit tests..
+  
+        
+  zos_context:
+    container_name: zos_context
+    image: scalable-context-aware-application_zos_context
+    ports:
+      - "6061:6060"
+    environment:
+      - CONTEXT_RPC_PORT=6060
+      - CONTEXT_RPC_HOST=zos_context
+      - RABBIT_MQ_HOST=rabbitmq-broker
+      - RABBIT_MQ_USER=omar
+      - RABBIT_MQ_PASSWORD=omar
+      - RABBIT_MQ_PORT=5672
+      - REDIS_HOST=remote_dictionary
+      - REDIS_PORT=6379
+      - ZOS_CONTEXT_ID=1
+  rabbit_mq:
+    container_name: rabbitmq-broker
+    image:  "rabbitmq:3-management"
+    hostname: rabbitmq-broker
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=omar
+      - RABBITMQ_DEFAULT_PASS=omar
+    networks:
+      - context_net
+      - phoros_net
+
 networks:
   phoros_net:
     external:  true
   phoros_public_net:
     external:  true
-
-
-# the following is made for unit tests..
-  
-  # context_net:
-  #   external: true
-        
-  # zos_context:
-  #   container_name: zos_context
-  #   image: scalable-context-aware-application_zos_context
-  #   ports:
-  #     - "6061:6060"
-  #   environment:
-  #     - CONTEXT_RPC_PORT=6060
-  #     - CONTEXT_RPC_HOST=zos_context
-  #     - RABBIT_MQ_HOST=rabbitmq-broker
-  #     - RABBIT_MQ_USER=omar
-  #     - RABBIT_MQ_PASSWORD=omar
-  #     - RABBIT_MQ_PORT=5672
-  #     - REDIS_HOST=remote_dictionary
-  #     - REDIS_PORT=6379
-  #     - ZOS_CONTEXT_ID=1
-  # rabbit_mq:
-  #   container_name: rabbitmq-broker
-  #   image:  "rabbitmq:3-management"
-  #   hostname: rabbitmq-broker
-  #   ports:
-  #     - 5672:5672
-  #     - 15672:15672
-  #   environment:
-  #     - RABBITMQ_DEFAULT_USER=omar
-  #     - RABBITMQ_DEFAULT_PASS=omar
-  #   networks:
-  #     - context_net
-  #     - phoros_net
+  context_net:
+    external: true
