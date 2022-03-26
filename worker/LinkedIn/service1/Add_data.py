@@ -6,11 +6,9 @@ from context import Context
 from get_data import get_comment_data ,get_post_page,get_post_url,get_user_comment_data
 
 
-def Add_Posts_nodes(Graphe,file_graphe,context_obj,schema,list_url,page):
+def Add_Posts_nodes(Graphe,context_obj,schema,list_url,page):
     print("Add Posts")
      
-    """ username="alilamri350@gmail.com"
-    password="""""
     username=context_obj.keys['username']
     password=context_obj.keys=['password']
      
@@ -39,14 +37,14 @@ def Add_Posts_nodes(Graphe,file_graphe,context_obj,schema,list_url,page):
             if indice > limit_posts:
                context_obj.graph=Graphe
                break
-               # nx.write_gexf(Graphe, file_graphe+".gexf") 
+               
                 
             data['checked']=2
             data['type']='post'
             
             Graphe.add_nodes_from([(list_url[i],data)])
             Graphe.add_edge(page,str(list_url[i]), link_type="published_in")
-            #nx.write_gexf(Graphe, file_graphe+".gexf")
+            
             context_obj.graph=Graphe 
         except Exception as ex:
             print(ex)
@@ -57,7 +55,7 @@ def Add_Posts_nodes(Graphe,file_graphe,context_obj,schema,list_url,page):
 
 
 
-def Add_comment_user(linkedin,Graphe,context,file_graphe,username , password ,list_url,limit_comment,schema,add_user,add_comm):
+def Add_comment_user(linkedin,Graphe,context,username , password ,list_url,limit_comment,schema,add_user,add_comm):
     
     x=0
     for url in list_url:
@@ -71,9 +69,7 @@ def Add_comment_user(linkedin,Graphe,context,file_graphe,username , password ,li
         comments= linkedin.get_comments()
         time.sleep(5)
        
-        #val=len(comments['body'])
-        #while more:
-      
+        
         linkedin.click_load_more()
         time.sleep(3)
         comments= linkedin.get_comments()
@@ -111,9 +107,7 @@ def Add_comment_user(linkedin,Graphe,context,file_graphe,username , password ,li
 
         
             Graphe.add_edge(url ,user_com['User Link'], link_type="comment")
-            print("write************")
             context.graph=Graphe
-            #nx.write_gexf(Graphe, file_graphe+".gexf") 
-
+ 
  
     

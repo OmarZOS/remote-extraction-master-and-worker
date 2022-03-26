@@ -18,13 +18,14 @@ from get_data import get_post_url
 from Add_data import Add_comment_user,Add_Posts_nodes
 import json
 from networkx.readwrite import json_graph
+from API_ExtractionService.Network_Extractor import Network_Extractor
 
 
 
-class Extractor:
+class Extractor(NetworkExtractor):
     linkedin=None
     Graphe=None
-    file_graphe=''
+    
     context=None
     Schema=[]
     context= None
@@ -32,11 +33,12 @@ class Extractor:
 
    
 
-    def __init__(self,linkedin,Graphe,file_graphe,context,Schema):
+    def __init__(self,linkedin,context,Schema,publisher,roadmap,Graphe):
         print("Extractors")
+        self.super().__init__("LinkedIn",context,Schema,publisher,roadmap)
         self.linkedin=linkedin
         self.Graphe=Graphe
-        self.file_graphe=file_graphe
+
         self.context=context
         self.Schema=Schema
         self.context=context
@@ -95,7 +97,7 @@ class Extractor:
  
 
 
-
+    @NetworkExtractor.data_publisher
     def create_graphe(self,linkedin,Graphe,file_graphe,context,Schema):
         print("-----create graphe--------")
         username=context.keys['username']

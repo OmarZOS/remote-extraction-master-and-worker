@@ -40,7 +40,7 @@ def check_value2(post):
 
  
 
-def Add_friends(Graphe,file_graphe,list_friends,limit_friend,Schema,v,cookies):
+def Add_friends(Graphe ,list_friends,limit_friend,Schema,v,cookies):
      i=0
      
      for friend in list_friends:
@@ -50,12 +50,12 @@ def Add_friends(Graphe,file_graphe,list_friends,limit_friend,Schema,v,cookies):
                 #print(friend)
                 if str( friend) not in Graphe:
                     #print("friend")
-                    Add_user(Graphe,file_graphe, Schema,friend,v, cookies )
+                    Add_user(Graphe , Schema,friend,v, cookies )
                     #key=(key+1)%len(cookies)
                 else:
                      Graphe.add_edge(v,str(friend),link_type="friend")
                     
-                     nx.write_gexf(Graphe, file_graphe+".gexf") 
+                     #nx.write_gexf(Graphe, file_graphe+".gexf") 
 
 
              time.sleep(2)
@@ -96,7 +96,7 @@ def Add_friends(Graphe,file_graphe,list_friends,limit_friend,Schema,v,cookies):
 
 
 
-def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
+def Add_posts(email,passd,account,schema,graphe,nb_post,cookies):
     print("scrapping post")
     list_post={}
     
@@ -129,8 +129,7 @@ def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
         while True:
             time.sleep(3)
 
-            print("ok while")
-            
+             
             soup=BeautifulSoup(driver1.page_source,"html.parser")
             all_post=soup.find_all("div",{"class":"du4w35lb k4urcfbm l9j0dhe7 sjgh65i0"})
             time.sleep(3)
@@ -156,8 +155,9 @@ def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
                     else:
                         print("exist")
                         
-                except:
+                except Exception as ex :
                         print('no publisher')
+                        print(ex)
                
                 
                
@@ -184,7 +184,7 @@ def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
                              
                             content1=content.find ("div",{"style":"text-align: start;"})
                             content_list.append(content1.text)
-                            print("content1")
+                            
                             data["content1"]=content1.text
                 except:
                     content_list.append("")
@@ -199,7 +199,6 @@ def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
                         content2=check_value2(post)
                         content3= content2.find ("div",{"style":"text-align: start;"})
                         content_list2.append(content3.text)
-                        print("content3")
                         data["content2"]=content3.text
                
                 except Exception as ex:
@@ -209,7 +208,7 @@ def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
 
                 
                 try:
-                    print("kayen time ")
+                    
                     
 
                     time1=post.find("a",{"class":"oajrlxb2 g5ia77u1 qu0x051f esr5mh6w e9989ue4 r7d6kgcz rq0escxv nhd2j8a9 nc684nl6 p7hjln8o kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x jb3vyjys rz4wbd8a qt6c0cv9 a8nywdso i1ao9s8h esuyzwwr f1sip0of lzcic4wl gmql0nx0 gpro0wi8 b1v8xokw"})
@@ -252,7 +251,7 @@ def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
                     graphe.add_edge(account,str(length)+account, link_type="publisher")
 
 
-                nx.write_gexf(graphe, file_graphe+".gexf") 
+                #nx.write_gexf(graphe, file_graphe+".gexf") 
  
                
                 if length>nb_post:
@@ -291,7 +290,7 @@ def Add_posts(email,passd,account,schema,graphe,file_graphe,nb_post,cookies):
     
 
             
-def Add_user(Graphe,file_graphe,context,id,v,cookies) :
+def Add_user(Graphe,context,id,v,cookies) :
 
     key=0
     
@@ -315,7 +314,7 @@ def Add_user(Graphe,file_graphe,context,id,v,cookies) :
             Graphe.add_nodes_from([(id,data)])
         
             Graphe.add_edge(v,str(id),link_type="friend")
-            nx.write_gexf(Graphe,file_graphe+".gexf") 
+            #nx.write_gexf(Graphe,file_graphe+".gexf") 
             return 1
 
 
@@ -325,7 +324,7 @@ def Add_user(Graphe,file_graphe,context,id,v,cookies) :
             
             Graphe.add_edge(v,str(id),link_type="friend")
                         
-            nx.write_gexf(Graphe,file_graphe+".gexf") 
+            #nx.write_gexf(Graphe,file_graphe+".gexf") 
         else:
              Graphe.add_edge(v,str(id),link_type="friend")
 
