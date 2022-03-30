@@ -1,8 +1,9 @@
 
+# COPYRIGHT 2022 LAMRI Ali, ZAIDI Omar
+
 from asyncio.windows_events import NULL
-from API_ExtractionService.Network_Extractor import Network_Extractor
+from API_ExtractionService.Network_Extractor import Network_Extractor, NetworkExtractor
 import json
-from click import option
 from facebook_scraper import get_posts,get_friends,get_profile
 from facebook_scraper import get_group_info
 import pandas as pd
@@ -14,21 +15,31 @@ from Add_data import Add_friends,Add_posts
 from get_data import get_driver,get_friends_user,get_id,get_user_name_password
 from networkx.readwrite import json_graph
 
-
 class Extractor(NetworkExtractor):
- 
  
     context=None
     Schema=[]
     graphe=NULL
-    def __init__(self,context,Schema,publisher,roadmap):
-        print("Extractors")
-        self.super().__init__("Facebook",context,Schema,publisher,roadmap)
+    def __init__(self,zos_context,Schema,publisher,roadmap):
+        # print("Extractors")
+        Schema={'user':['id','Name','Friend_count','Follower_count','About'],'post':['post_id','post_text','comments','user_id','reaction_count','page_id','fetched_time']}
+        account='100012000482675'
+        cookie=['s.txt']
+        creds={'email':email,'password':password}
+        post=True
+        limit_post=1
+        limit_friends=3
+        max=1
+        # file_graphe="fb_graphe"
         
-        self.context=context
+        cxt=Context(account,creds,limit_post,limit_friends,max,post,False,True)
+
+        context=cxt
+
+        # this was painful to adapt..
+        self.super().__init__("Facebook",context,Schema,publisher,roadmap)
         self.Schema=Schema
         try:
-
             cookies=list(context.get("Fb_cookies")   )
         except Exception as ex:
             print(ex)
@@ -70,7 +81,8 @@ class Extractor(NetworkExtractor):
         try:
             profile=get_profile(account)
         except Exception as ex:
-             profile=get_profile(account,cookies=cookies)
+            print(str(ex))
+            profile=get_profile(account,cookies=cookies)
 
                
 
@@ -145,11 +157,12 @@ class Extractor(NetworkExtractor):
                    time.sleep(3)
                 self.set_graph(Graphe)
                 final_graph=self.get_graph()
-                json=json_graph.node_link_data(self.graphe)
+                self.graph = self.graphe
+                # json=json_graph.node_link_data(self.graph)
                          
-                       # print(json)
-                payload = json
-                payload["road_map"] = []
+                # print(json)
+                # payload = json
+                # payload["road_map"] = []
                 
                                      
 
@@ -157,7 +170,7 @@ class Extractor(NetworkExtractor):
                 print("ops")
                 print(ex)     
 
-
+    @NetworkExtractor.data_publisher
     def create_Graphe_group(self,context,Schema,cookies):
         count_parsed=0
         email=context. keys['email']

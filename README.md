@@ -16,6 +16,15 @@ Use this command to build and deploy the containers:
 
     sudo docker-compose up -d
 
+#### Development
+
+  The folder [env](/env/) contains environment variables for each supported online social network.
+  Depending on your implementation, there are variables that are global (like `TwitterCredentials`) and there are some that are specific for a service.
+  These variable names are shown in [extractors.json](/worker/extractors.json)  and initialised inside constants.py in order to be used in a generic way and avoid to mess around inside the code.
+
+  - To use the variables in a large scaled extraction, you should initialise every variable mentioned in `extractors.json` after launching the `shared context` subsystem.
+
+
 
 
 ### Progress

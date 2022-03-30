@@ -1,85 +1,50 @@
 version: "3.5"
 services:
-  extractor_proxy:
-    container_name: phoros_extractor_proxy
-    hostname: phoros_extractor_proxy
+  extractor-proxy:
+    container_name: phoros-extractor-proxy
+    hostname: phoros-extractor-proxy
     build:  proxy/.
-    image: omarzos/extractor_proxy
+    image: omarzos/extractor-proxy
+    env_file:
+      - env/facebook_creds.env
+      - env/twitter_creds.env
+      - env/linkedin_creds.env
     ports:
-      - ${PROXY_PORT_EXT}:${PROXY_PORT_EXT}
+      - ${PROXY_PORT_EXT}
     environment:
-      - CONTEXT_RPC_HOST=zos_context
-      - PROXY_HOST=phoros_extractor_proxy
+      - CONTEXT_RPC_HOST=zos-context
+      - PROXY_HOST=phoros-extractor-proxy
       - CONTEXT_RPC_PORT=${CONTEXT_PORT}
       - PROXY_PORT=${PROXY_PORT_EXT}
     networks:
       - phoros_net
     volumes:
       - ./proxy/:/code
-  extractor_worker1:
-    container_name: phoros_extractor_worker1
-    hostname: phoros_extractor_worker1
-    depends_on:
-      - extractor_proxy
+  extractor-worker1:
+    container_name: phoros-extractor-worker1
+    hostname: phoros-extractor-worker1
+    depends_on: # it is preferable to wait for the proxy, or else you'll have to manually establish connection..
+      - extractor-proxy
     build:  worker/.
-    image: omarzos/extractor_worker
+    image: omarzos/extractor-worker
     ports: 
-      - ${WORKER1_PORT}:${WORKER1_PORT}
+      - ${WORKER_PORT1}
+    env_file:
+      - env/rabbitmq.env
     environment:
-      - RABBIT_MQ_USER=omar
-      - RABBIT_MQ_PASSWORD=omar
-      - RABBIT_MQ_HOST=rabbitmq-broker
-      - RABBIT_MQ_PORT=5672
-      - RABBIT_MQ_EXCHANGE=transform
-      - PROXY_HOST=phoros_extractor_proxy
-      - CONTEXT_RPC_HOST=zos_context
-      - EXTRACTOR_WORKER_HOST=phoros_extractor_worker1
+      - EXTRACTOR_WORKER_HOST=phoros-extractor-worker1
+      - PROXY_HOST=${PROXY_HOST}
+      - CONTEXT_RPC_HOST=${CONTEXT_RPC_HOST}
       - PROXY_PORT=${PROXY_PORT_EXT}
       - CONTEXT_RPC_PORT=${CONTEXT_PORT}
-      - EXTRACTOR_WORKER_PORT=${WORKER1_PORT}
+      - EXTRACTOR_WORKER_PORT=${WORKER_PORT1}
     networks:
       - phoros_net
       - phoros_public_net
     volumes:
       - ./worker/:/code
-
-
-# the following is made for unit tests..
-  
-        
-  zos_context:
-    container_name: zos_context
-    image: scalable-context-aware-application_zos_context
-    ports:
-      - "6061:6060"
-    environment:
-      - CONTEXT_RPC_PORT=6060
-      - CONTEXT_RPC_HOST=zos_context
-      - RABBIT_MQ_HOST=rabbitmq-broker
-      - RABBIT_MQ_USER=omar
-      - RABBIT_MQ_PASSWORD=omar
-      - RABBIT_MQ_PORT=5672
-      - REDIS_HOST=remote_dictionary
-      - REDIS_PORT=6379
-      - ZOS_CONTEXT_ID=1
-  rabbit_mq:
-    container_name: rabbitmq-broker
-    image:  "rabbitmq:3-management"
-    hostname: rabbitmq-broker
-    ports:
-      - 5672:5672
-      - 15672:15672
-    environment:
-      - RABBITMQ_DEFAULT_USER=omar
-      - RABBITMQ_DEFAULT_PASS=omar
-    networks:
-      - context_net
-      - phoros_net
-
 networks:
   phoros_net:
     external:  true
   phoros_public_net:
     external:  true
-  context_net:
-    external: true
