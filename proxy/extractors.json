@@ -74,6 +74,7 @@
         }
     }],
     "Facebook": [{
+        "variables": ["FacebookCredentials"],
         "service1": {
             "strategy": "scrapping",
             "schema": {

@@ -8,8 +8,6 @@ These components are supposed to be dependent to packages from my previous repos
 
 ### Deploying
 
-
-
 #### Docker
 
 Use this command to build and deploy the containers:

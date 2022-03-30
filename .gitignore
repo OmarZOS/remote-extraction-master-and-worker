@@ -1,3 +1,7 @@
 ali_lamri.txt
+__pycache__
+facebook_creds.env
+twitter_creds.env
+linkedin_creds.env
 
 

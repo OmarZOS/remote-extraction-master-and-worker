@@ -1,7 +1,7 @@
 
 from API_ExtractionService.Proxies.API_ExtractionProxy import API_ExtractionProxy
-from worker.locator import locator
-from worker.constants import *
+from proxy.locator import locator
+from proxy.constants import *
 from proxy.functions import *
 
 
@@ -10,8 +10,7 @@ class extractorProxy(API_ExtractionProxy):
     context = locator.getContext()
     
     def __init__(self,args):
-        initialiseTwitterTokens(self.context,TWITTER_TOKEN_IDENTIFIER)
-
+        pass
     def start_harvesting_data(self,model):
         pass
     

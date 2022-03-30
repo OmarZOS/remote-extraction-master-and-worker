@@ -9,6 +9,7 @@ services:
       - env/facebook_creds.env
       - env/twitter_creds.env
       - env/linkedin_creds.env
+      - env/varnames.env
     ports:
       - ${PROXY_PORT_EXT}
     environment:
@@ -31,6 +32,7 @@ services:
       - ${WORKER_PORT1}
     env_file:
       - env/rabbitmq.env
+      - env/varnames.env
     environment:
       - EXTRACTOR_WORKER_HOST=phoros-extractor-worker1
       - PROXY_HOST=${PROXY_HOST}

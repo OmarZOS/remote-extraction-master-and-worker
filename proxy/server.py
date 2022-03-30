@@ -5,7 +5,7 @@ import xmlrpc.client
 
 from locator import locator
 from constants import *
-from proxy.functions import choose_model
+from functions import choose_model, init_variables, initialise_credentials
 
 available_workers = []
 
@@ -20,8 +20,24 @@ context = xmlrpc.client.ServerProxy(url)
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
+# Twitter init
+initialise_credentials(context
+    ,TWITTER_TOKEN_IDENTIFIER
+    ,TWITTER_TOKEN_FIELDS)
 
+init_variables(context,TWITTER_GLOBAL_VARIABLES)
 
+initialise_credentials(context
+    ,FACEBOOK_TOKENS_IDENTIFIER
+    ,FACEBOOK_TOKEN_FIELDS)
+
+init_variables(context,FACEBOOK_GLOBAL_VARIABLES)
+
+initialise_credentials(context
+    ,LINKEDIN_TOKENS_IDENTIFIER
+    ,LINKEDIN_TOKEN_FIELDS)
+
+init_variables(context,LINKEDIN_GLOBAL_VARIABLES)
 
 print("Serving at {}:{}".format(SERVING_HOST,SERVING_PORT))
 # Create server

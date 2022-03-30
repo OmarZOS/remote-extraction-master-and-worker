@@ -15,8 +15,6 @@ class UserExtractor:
 
     # set the waiting time
     Time=0
-    Limited_number_of_followers=4000
-    Limited_number_of_friends=4000
     fullStructure = None
 
 
