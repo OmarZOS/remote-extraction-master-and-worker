@@ -1,7 +1,7 @@
 ali_lamri.txt
 __pycache__
-facebook_creds.env
-twitter_creds.env
-linkedin_creds.env
+env/facebook_creds.env
+env/twitter_creds.env
+env/linkedin_creds.env
 
 

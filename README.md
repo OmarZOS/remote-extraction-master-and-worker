@@ -28,14 +28,12 @@ Use this command to build and deploy the containers:
 ### Progress
     
 
-- [ ] Proxy server. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/67)
-  - [ ] REST communication for updates.
-    - [ ] Lookup transformer services.
-    - [ ] Lookup available scripts.
-    - [ ] Additivity of more scripts. 
+- [x] Proxy server. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/82)
+  - [x] Lookup available scripts.
+  - [x] Additivity of more scripts. 
   - [x] Submit tasks to workers.
-- [x] In between node communication. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/67)
-- [ ] Extraction template. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/50)
+- [x] In between node communication. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/80)
+- [x] Extraction template. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/80)
   - [x] Sending data to data transformers.
   - [ ] Dynamic script loading.
 - [x] Containerisation. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/90)
