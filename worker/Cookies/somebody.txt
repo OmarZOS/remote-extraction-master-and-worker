@@ -1,0 +1,14 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a cookie template, generate a similar file.
+
+.facebook.com   ******  *******   ******* *******  
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
+.facebook.com   ******  *******   ******* *******
