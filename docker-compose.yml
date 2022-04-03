@@ -49,4 +49,6 @@ networks:
   phoros_net:
     external:  true
   phoros_public_net:
-    external:  true
+    driver: bridge
+    name: phoros_public_net
+    # external:  true

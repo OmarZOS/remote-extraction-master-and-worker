@@ -8,7 +8,7 @@ def initialise_credentials(context,*args):
     fields = {}
     
     for item in args[1]:
-        fields[item] = str(os.getenv(TWEET_CONSUM_VARNAME)).split(",")
+        fields[item] = str(os.getenv(os.getenv(str(item)))).split(",")
 
     creds_count = min(len(k) for k in fields.values() )  
 
@@ -17,7 +17,7 @@ def initialise_credentials(context,*args):
         for (k,v) in fields.items():
             creds[k]=v[i]
         creds_json = json.dumps(creds)
-        context.set(args[0],creds_json)
+        context.set(str(args[0]),str(creds_json))
 
 # api_variables_csv: a comma separated variable names
 # for a specific API

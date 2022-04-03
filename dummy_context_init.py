@@ -4,7 +4,7 @@ import xmlrpc.client
 
 SERVING_HOST = str(os.getenv("CONTEXT_RPC_HOST"))
 SERVING_PORT = int(os.getenv("CONTEXT_RPC_PORT"))
-url="http://{}:{}".format(SERVING_HOST,SERVING_PORT)
+url="http://{}:{}".format("localhost",6061)
 context = xmlrpc.client.ServerProxy(url)
 
 # SERVING_HOST = str(os.getenv("EXTRACTOR_WORKER_HOST"))
@@ -42,16 +42,16 @@ creds_1 = json.dumps(creds_1)
 creds_2 = json.dumps(creds_2)
 creds_3 = json.dumps(creds_3)
 
-context.set("TwitterCredentials",creds_0)
+print(context.get("TwitterCredentials"))
 # # context.set("TwitterCredentials",creds_1)
 # context.set("TwitterCredentials",creds_2)
 # # context.set("TwitterCredentials",creds_3)
 
-context.set("Twitter_User_ID","1192946702891790336") # Abd Elmadjid Tebboune
-context.set("Follower_Count_Limit","200")
-context.set("Friend_Count_Limit","200")
+# context.set("Twitter_User_ID","1192946702891790336") # Abd Elmadjid Tebboune
+# context.set("Follower_Count_Limit","200")
+# context.set("Friend_Count_Limit","200")
 
-print(context.get("Twitter_User_ID"))
+# print(context.get("Twitter_User_ID"))
 
 # worker.start_harvesting_data("Twitter-service1",{"user":["id"]})
 

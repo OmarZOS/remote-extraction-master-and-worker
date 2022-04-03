@@ -10,18 +10,19 @@ import pandas as pd
 from context  import Context
 import time
 import os
-import networkx as nx 
+import networkx as nx
 from Add_data import Add_friends,Add_posts 
 from get_data import get_driver,get_friends_user,get_id,get_user_name_password
 from networkx.readwrite import json_graph
 
 class Extractor(NetworkExtractor):
- 
+    
     context=None
     Schema=[]
     graphe=NULL
     def __init__(self,zos_context,Schema,publisher,roadmap):
         # print("Extractors")
+        zos_context.get("FB_USERS")
         Schema={'user':['id','Name','Friend_count','Follower_count','About'],'post':['post_id','post_text','comments','user_id','reaction_count','page_id','fetched_time']}
         account='100012000482675'
         cookie=['s.txt']
@@ -52,15 +53,14 @@ class Extractor(NetworkExtractor):
 
     def get_graph(self):
         return self.graphe
-    
+
     def set_graph(self,g):
         self.graphe=g
 
-        
+    
     @NetworkExtractor.data_publisher
     def create_Graphe_friends(self,context,Schema,cookies):
-       
-
+        
         count_parsed=0
         email= context.keys["email"]
         password=context.keys["password"]
@@ -84,15 +84,14 @@ class Extractor(NetworkExtractor):
             print(str(ex))
             profile=get_profile(account,cookies=cookies)
 
-               
+        
 
         key=(key+1)%len(cookies)
          
         for attr in Schema['user']:
-            if attr in profile.keys():
-             
+            if attr in profile.keys():             
               nx.set_node_attributes(Graphe, name=attr, values=str(profile[attr]))
-           
+
         if context.user:
 
             print("user scraping")

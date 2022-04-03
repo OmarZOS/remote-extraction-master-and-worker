@@ -1,11 +1,10 @@
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
-import os
 import xmlrpc.client
 
 from locator import locator
 from constants import *
-from functions import choose_model, init_variables, initialise_credentials
+from functions import choose_service, init_variables, initialise_credentials
 
 available_workers = []
 
@@ -13,13 +12,13 @@ schemas = {}
 
 current_tasks = [{"id":1}]
 
-url="http://{}:{}".format(CONTEXT_HOST,CONTEXT_PORT)
-context = xmlrpc.client.ServerProxy(url)
 
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
+url="http://{}:{}".format(CONTEXT_HOST,CONTEXT_PORT)
+context = xmlrpc.client.ServerProxy(url)
 # Twitter init
 initialise_credentials(context
     ,TWITTER_TOKEN_IDENTIFIER
