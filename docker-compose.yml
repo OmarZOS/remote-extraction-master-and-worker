@@ -26,9 +26,9 @@ services:
     hostname: phoros-extractor-worker1
     depends_on: # it is preferable to wait for the proxy, or else you'll have to manually establish connection..
       - extractor-proxy
-    build:  worker/.
+    build: worker/.
     image: omarzos/extractor-worker
-    ports: 
+    ports:
       - ${WORKER_PORT1}
     env_file:
       - env/rabbitmq.env
@@ -45,6 +45,7 @@ services:
       - phoros_public_net
     volumes:
       - ./worker/:/code
+      - ./data/:/data
 networks:
   phoros_net:
     external:  true

@@ -4,6 +4,8 @@ from multiprocessing import  Process
 import xmlrpc.client
 from locator import locator
 from constants import *
+from image_downloader.image_downloader import start_downloading as img_downloader
+
 
 current_tasks = [{"id":1}]
 
@@ -59,6 +61,12 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
         except Exception :
             return False
         #current_tasks is invloved, don't forget to pass context object
+
+    @server.register_function(name='start_downloading_images')
+    def start_downloading_images():
+        pass
+    
+
 
     extraction_proxy.register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
 

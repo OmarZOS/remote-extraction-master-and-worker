@@ -18,4 +18,9 @@ PUBLISH_ERROR = "Error while trying to publish data"
 # AVOID MODIFYING HERE, GOTO env/varnames.env and do your business
 TWITTER_TOKEN_IDENTIFIER = str(os.getenv("TWITTER_TOKEN_IDENTIFIER"))
 
+NUM_PROCS=int(os.getenv("NUM_PROCS"))
+IMAGES_DIR=(os.getenv("IMAGES_DIR"))
 
+IMAGES_URLS=(os.getenv("IMAGES_URLS_VAR"))
+
+YOUTUBE_VIDEO_URL=(os.getenv("YOUTUBE_VIDEO_URLS_VAR"))

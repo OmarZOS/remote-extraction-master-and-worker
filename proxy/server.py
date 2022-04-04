@@ -1,3 +1,5 @@
+from random import random
+import threading
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 import xmlrpc.client
@@ -12,6 +14,7 @@ schemas = {}
 
 current_tasks = [{"id":1}]
 
+timers = {}
 
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -115,12 +118,29 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
         try:
             # if not api :
             return [k["url"] for k in available_workers]
-            
             # return available_workers
         except print(0):
             return False;
-    
-    
+
+    @server.register_function(name='start_downloading_images')
+    def start_downloading_images():
+        index = random.randrange(len(available_workers))
+        if index not in timers:
+            worker = available_workers[index]["client"]
+            timer = threading.Timer(2.0, worker.start_downloading_images)
+            timer.start()
+            timers[str(index)] = timer
+        else: 
+            timer.start()
+        return True
+
+    @server.register_function(name='stop_downloading_images')
+    def stop_downloading_images():
+        for k in timers.keys():
+            timers[k].cancel()
+            timers.pop(k)
+        return True;
+
     # Run the server's main loop
     server.serve_forever()
 

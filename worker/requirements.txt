@@ -1,4 +1,14 @@
 pika==1.2.0
+
 networkx==2.7.1
+
 tweepy==4.8.0
 
+facebook_scraper
+
+requests
+
+pafy
+youtube_dl
+cv2
+cPickle
