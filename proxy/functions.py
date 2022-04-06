@@ -1,6 +1,16 @@
 import json
 import os
+import xmlrpc.client
 from constants import *
+
+context = None
+
+def get_context():
+    global context
+    if(not context):
+        url_context=f"{CONTEXT_SCHEME}://{CONTEXT_HOST}:{CONTEXT_PORT}"
+        context = xmlrpc.client.ServerProxy(url_context)
+    return context
 
 # start with the identifier, then by fields
 def initialise_credentials(context,*args):
@@ -15,7 +25,8 @@ def initialise_credentials(context,*args):
     for i in range(creds_count): # for each column
         creds = {}
         for (k,v) in fields.items():
-            creds[k]=v[i]
+            # k is the conventional varname, we have to get the real value 
+            creds[str(os.getenv(k))]=v[i]
         creds_json = json.dumps(creds)
         context.set(str(args[0]),str(creds_json))
 
@@ -33,4 +44,4 @@ def init_variables(context,api_variables):
 
 def choose_service(context,model,available_services): #------- TODO ----------------
     pass
-    
+

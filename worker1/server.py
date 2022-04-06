@@ -1,20 +1,15 @@
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 from multiprocessing import  Process
-import xmlrpc.client
 from locator import locator
-from constants import *
 from image_downloader.image_downloader import start_downloading as img_downloader
-
+from Video_downloader.video_downloader import Extractor as video_downloader
+from functions import *
+import constants
 
 current_tasks = [{"id":1}]
 
-urlProxy="http://{}:{}".format(PROXY_HOST,PROXY_PORT)
-extraction_proxy = xmlrpc.client.ServerProxy(urlProxy)
 print("Serving somewhere")
-
-url_context="http://{}:{}".format(CONTEXT_HOST,CONTEXT_PORT)
-context = xmlrpc.client.ServerProxy(url_context)
 
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -30,18 +25,22 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
     
     @server.register_function(name='subscribe_in_proxy')
     def subscribe_in_proxy(): #first things first
-        extraction_proxy.register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
+        get_proxy().register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
         return True
 
     @server.register_function(name='change_proxy')
-    def change_proxy(proxy_host,proxy_port):#first things first
-        urlProxy="http://{}:{}".format(proxy_host,proxy_port)
-        extraction_proxy = xmlrpc.client.ServerProxy(urlProxy)
+    def change_proxy(proxy_scheme,proxy_host,proxy_port):#first things first
+        os.environ["PROXY_SCHEME"] = str(proxy_scheme)
+        constants.PROXY_SCHEME = proxy_scheme
+        os.environ["PROXY_HOST"] = str(proxy_host)
+        constants.PROXY_HOST = proxy_host
+        os.environ["PROXY_PORT"] = str(proxy_port)
+        constants.PROXY_PORT = proxy_port
         return True
 
-    # Setting a context variable
+    # Setting a get_context() variable
     def setVariable(varname,value):
-        return context.set(varname,value)
+        return get_context().set(varname,value)
     server.register_function(setVariable, 'set')
     
     def subscribe_service(api,service_name,instance,json_info):
@@ -54,21 +53,33 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
     def start_harvesting_data(api_name,service_name,model):
         try:
             p = Process(target=locator.getService(api_name,service_name),
-                        args=(context,model,locator.getPublisher(),))
+                        args=(get_context(),model,locator.getPublisher(),))
             p.start()
             return p.pid
         
         except Exception :
             return False
-        #current_tasks is invloved, don't forget to pass context object
+        #current_tasks is invloved, don't forget to pass get_context() object
 
     @server.register_function(name='start_downloading_images')
     def start_downloading_images():
         pass
+
+    @server.register_function(name='start_downloading_images')
+    def start_downloading_video():
+        try:
+            p = Process(target=video_downloader,
+                        args=(get_context(),locator.getPublisher(),))
+            p.start()
+            return p.pid
+        
+        except BaseException as e :
+            print (str(e))
+            return False
     
 
 
-    extraction_proxy.register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
+    get_proxy().register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
 
     # Run the server's main loop
     server.serve_forever()

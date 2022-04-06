@@ -7,4 +7,4 @@ SAVE_PATH = "output/"
 YOUTUBE_TOKEN = str(os.getenv("YOUTUBE_KEY"))
 
 MAXDEMANDS = int(os.getenv("MAXDEMANDS"))
-REGIONCODE = str(os.getenv("REGIONCODE"))   # international by default
+REGIONCODE = str(os.getenv("REGIONCODE"))   # IT: international by default

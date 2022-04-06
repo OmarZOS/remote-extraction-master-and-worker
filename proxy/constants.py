@@ -2,6 +2,7 @@ import os
 
 CONTEXT_HOST = (os.getenv("CONTEXT_RPC_HOST"))
 CONTEXT_PORT = int(os.getenv("CONTEXT_RPC_PORT"))
+CONTEXT_SCHEME =  os.getenv("CONTEXT_RPC_SCHEME")
 
 SERVING_HOST = (os.getenv("PROXY_HOST"))
 SERVING_PORT = int(os.getenv("PROXY_PORT"))

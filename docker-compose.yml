@@ -13,17 +13,19 @@ services:
     ports:
       - ${PROXY_PORT_EXT}
     environment:
+      - CONTEXT_RPC_SCHEME=${CONTEXT_RPC_SCHEME}
       - CONTEXT_RPC_HOST=zos-context
+      - CONTEXT_RPC_PORT=${CONTEXT_RPC_PORT}
+      - PROXY_RPC_SCHEME=${PROXY_SCHEME}
       - PROXY_HOST=phoros-extractor-proxy
-      - CONTEXT_RPC_PORT=${CONTEXT_PORT}
       - PROXY_PORT=${PROXY_PORT_EXT}
     networks:
       - phoros_net
     volumes:
       - ./proxy/:/code
-  extractor-worker1:
-    container_name: phoros-extractor-worker1
-    hostname: phoros-extractor-worker1
+  extractor-worker:
+    container_name: phoros-extractor-worker
+    hostname: phoros-extractor-worker
     depends_on: # it is preferable to wait for the proxy, or else you'll have to manually establish connection..
       - extractor-proxy
     build: worker/.
@@ -34,11 +36,13 @@ services:
       - env/rabbitmq.env
       - env/varnames.env
     environment:
-      - EXTRACTOR_WORKER_HOST=phoros-extractor-worker1
+      - EXTRACTOR_WORKER_HOST=phoros-extractor-worker
       - PROXY_HOST=${PROXY_HOST}
       - CONTEXT_RPC_HOST=${CONTEXT_RPC_HOST}
+      - CONTEXT_RPC_SCHEME=${CONTEXT_RPC_SCHEME}
+      - PROXY_RPC_SCHEME=${PROXY_SCHEME}
       - PROXY_PORT=${PROXY_PORT_EXT}
-      - CONTEXT_RPC_PORT=${CONTEXT_PORT}
+      - CONTEXT_RPC_PORT=${CONTEXT_RPC_PORT}
       - EXTRACTOR_WORKER_PORT=${WORKER_PORT1}
     networks:
       - phoros_net
@@ -46,6 +50,32 @@ services:
     volumes:
       - ./worker/:/code
       - ./data/:/data
+
+  # downloader-worker1:
+  #   container_name: phoros-downloader-worker1
+  #   hostname: phoros-downloader-worker1
+  #   depends_on: # it is preferable to wait for the proxy, or else you'll have to manually establish connection..
+  #     - extractor-proxy
+  #   build: worker1/.
+  #   image: omarzos/downloader-worker1
+  #   ports:
+  #     - ${WORKER_PORT1}
+  #   env_file:
+  #     - env/rabbitmq.env
+  #     - env/varnames.env
+  #   environment:
+  #     - EXTRACTOR_WORKER_HOST=phoros-downloader-worker1
+  #     - PROXY_HOST=${PROXY_HOST}
+  #     - CONTEXT_RPC_HOST=${CONTEXT_RPC_HOST}
+  #     - PROXY_PORT=${PROXY_PORT_EXT}
+  #     - CONTEXT_RPC_PORT=${CONTEXT_PORT}
+  #     - EXTRACTOR_WORKER_PORT=${WORKER_PORT1}
+  #   networks:
+  #     - phoros_net
+  #     - phoros_public_net
+  #   volumes:
+  #     - ./worker1/:/code
+  #     - ./data/:/data
 networks:
   phoros_net:
     external:  true

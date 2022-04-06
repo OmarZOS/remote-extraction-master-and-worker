@@ -9,9 +9,11 @@ SERVING_PORT = int(os.getenv("EXTRACTOR_WORKER_PORT"))
 
 PROXY_HOST = (os.getenv("PROXY_HOST"))
 PROXY_PORT = (os.getenv("PROXY_PORT"))
+PROXY_SCHEME = (os.getenv("PROXY_SCHEME"))
 
 CONTEXT_HOST = os.getenv("CONTEXT_RPC_HOST")
 CONTEXT_PORT = os.getenv("CONTEXT_RPC_PORT")
+CONTEXT_SCHEME =  os.getenv("CONTEXT_RPC_SCHEME")
 
 PUBLISH_ERROR = "Error while trying to publish data"
 

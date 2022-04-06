@@ -6,7 +6,7 @@ import xmlrpc.client
 
 from locator import locator
 from constants import *
-from functions import choose_service, init_variables, initialise_credentials
+from functions import get_context,choose_service, init_variables, initialise_credentials
 
 available_workers = []
 
@@ -20,26 +20,24 @@ timers = {}
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
-url="http://{}:{}".format(CONTEXT_HOST,CONTEXT_PORT)
-context = xmlrpc.client.ServerProxy(url)
 # Twitter init
-initialise_credentials(context
+initialise_credentials(get_context()
     ,TWITTER_TOKEN_IDENTIFIER
     ,TWITTER_TOKEN_FIELDS)
 
-init_variables(context,TWITTER_GLOBAL_VARIABLES)
+init_variables(get_context(),TWITTER_GLOBAL_VARIABLES)
 
-initialise_credentials(context
+initialise_credentials(get_context()
     ,FACEBOOK_TOKENS_IDENTIFIER
     ,FACEBOOK_TOKEN_FIELDS)
 
-init_variables(context,FACEBOOK_GLOBAL_VARIABLES)
+init_variables(get_context(),FACEBOOK_GLOBAL_VARIABLES)
 
-initialise_credentials(context
+initialise_credentials(get_context()
     ,LINKEDIN_TOKENS_IDENTIFIER
     ,LINKEDIN_TOKEN_FIELDS)
 
-init_variables(context,LINKEDIN_GLOBAL_VARIABLES)
+init_variables(get_context(),LINKEDIN_GLOBAL_VARIABLES)
 
 print("Serving at {}:{}".format(SERVING_HOST,SERVING_PORT))
 # Create server
@@ -50,7 +48,7 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
 
     # Setting a context variable
     def setVariable(varname,value):
-        return context.set(varname,value)
+        return get_context().set(str(varname),value)
     server.register_function(setVariable, 'set')
     
     # Registering a worker
@@ -87,13 +85,16 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
     
     @server.register_function(name='get')
     def getVariable(varname):
-        return context.get(varname)
+        return get_context().get(varname)
+
+    @server.register_function(name='get_all_vars')
+    def get_all_vars():
+        return get_context().get_all_vals()
     
     @server.register_function(name='start_harvesting_data')
-    def start_harvesting_data(api_name,model,starting_node):
+    def start_harvesting_data(api_name,model,starting_node={}):
         for (k,v) in starting_node.items():
-            context.set(k,v)
-        
+            get_context().set(k,v)
         # - TODO: make a choice of a specific service name depending on the input model
         # service_name = choose_service(context,model,schemas)
         service_name = "service1" # make it work for now..

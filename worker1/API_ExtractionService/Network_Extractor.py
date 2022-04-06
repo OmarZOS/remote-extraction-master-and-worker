@@ -6,7 +6,6 @@ from networkx.classes.function import is_empty
 from constants import PUBLISH_ERROR
 
 class NetworkExtractor:
-
     
     def __init__(self,api,context,structure,publisher,roadmap=[]):
         
@@ -42,7 +41,6 @@ class NetworkExtractor:
     def getProxy(self):
         return self.proxy  
 
-
     @property
     def apiName(self):
         return self._apiName
@@ -51,7 +49,6 @@ class NetworkExtractor:
         # 'setting'
         self._apiName = app
 
-
-    def getStructureFilePath(self): # just keeping the reference to respect Liskov principle
+    def getStructureFilePath(self): 
         pass
         
