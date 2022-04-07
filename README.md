@@ -1,4 +1,4 @@
-# Extraction worker and proxy containers 
+# Extraction proxy and worker containers
 
 ## A distributed way to collect social media data
 
@@ -28,14 +28,20 @@ Use this command to build and deploy the containers:
 ### Progress
     
 
-- [x] Proxy server. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/82)
-  - [x] Lookup available scripts.
-  - [x] Additivity of more scripts. 
+- [x] Proxy server. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/90)
+  - [x] Service choice depending on the query model. 
   - [x] Submit tasks to workers.
-- [x] In between node communication. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/80)
-- [x] Extraction template. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/80)
+- [x] Choreographed extraction using context. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/90)
+- [x] Extraction template. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/85)
   - [x] Sending data to data transformers.
-  - [ ] Dynamic script loading.
+  - [x] Environment variables to initialise the extraction.
+  - Image Extraction.
+  - Youtube video downloading. 
 - [x] Containerisation. ![](https://us-central1-progress-markdown.cloudfunctions.net/progress/90)
   - [x] Automation of deployment. (docker-compose)
-  - [x] Smaller footprint. (fix alpine linux dependencies)
+  - [x] Smaller footprint.
+
+>## NOTES:
+> - Proxy and worker components are dependent on the context component.
+> - Workers depend on the proxy.
+>

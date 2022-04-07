@@ -1,8 +1,6 @@
 
 # COPYRIGHT 2022 LAMRI Ali, ZAIDI Omar
 
-# COPYRIGHT 2022 LAMRI Ali, ZAIDI Omar
-
 from asyncio.windows_events import NULL
 #from API_ExtractionService.Network_Extractor import Network_Extractor, NetworkExtractor
 import json
@@ -11,7 +9,6 @@ from facebook_scraper import get_posts,get_friends,get_profile
 from facebook_scraper import get_group_info
 import pandas as pd
 from context  import Context
-from Zos_context import Zos_Context
 import time
 import os
 import networkx as nx

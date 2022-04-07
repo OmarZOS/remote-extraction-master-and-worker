@@ -1,3 +1,4 @@
+import json
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 from multiprocessing import  Process
@@ -43,7 +44,7 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
     def setVariable(varname,value):
         return get_context().set(varname,value)
     server.register_function(setVariable, 'set')
-    
+
     def subscribe_service(api,service_name,instance,json_info):
         locator.availableServices[api][service_name]=json_info
         locator.setService(f"{api}",f"{service_name}",instance)
@@ -61,7 +62,6 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
         except Exception :
             return False
         #current_tasks is invloved, don't forget to pass get_context() object
-
 
     get_proxy().register_worker(SERVING_HOST,SERVING_PORT,locator.availableServices)
 

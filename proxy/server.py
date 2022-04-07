@@ -1,3 +1,4 @@
+import json
 from random import random
 import threading
 from xmlrpc.server import SimpleXMLRPCServer
@@ -6,7 +7,7 @@ import xmlrpc.client
 
 from locator import locator
 from constants import *
-from functions import get_context,choose_service, init_variables, initialise_credentials
+from functions import get_context,choose_service, get_session, init_variables, initialise_credentials, renovate_schema_index
 
 available_workers = []
 
@@ -54,34 +55,36 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
     # Registering a worker
     @server.register_function(name='register_worker')
     def register_worker(worker_host,worker_port,schema):
-        url = f"http://{worker_host}:{worker_port}"
-        try:
-            if(url not in [k["url"] for k in available_workers]):
-                available_workers.append({
-                        "url":url,
-                        "client":xmlrpc.client.ServerProxy(url)
-                    })
-                schemas[url] = schema
-                return True;
-            print ("The worker is already suscribed..")
-            # print (schemas)
+        url = f"http://{worker_host}:{worker_port}"    
+        if(url not in [k["url"] for k in available_workers]):
+            available_workers.append({
+                    "url":url,
+                    # "client":xmlrpc.client.ServerProxy(url)
+                })
+            global schemas
+            schemas = renovate_schema_index(schemas,schema,url)
             return True;
-        except print(0):
-            return False;
+        print ("The worker is already suscribed..")
+        # print (schemas)
+        return True;
+    
+    # Registering a worker
+    @server.register_function(name='show_schemas')
+    def show_schemes():
+        # print (schemas)
+        return str(schemas);
     
     # Updating a worker
     @server.register_function(name='update_worker')
     def update_worker(worker_host,worker_port,schema):
         url = "http://{}:{}".format(worker_host,worker_port)
-        try:
-            available_workers.append({
-                    "url":url,
-                    "client":xmlrpc.client.ServerProxy(url)
-                })
-            schemas[url] = schema
-            return True;
-        except :
-            return False;
+        available_workers.append({
+                "url":url
+                # ,"client":xmlrpc.client.ServerProxy(url)
+            })
+        global schemas
+        schemas = renovate_schema_index(schemas,schema,url)
+        return True;
     
     @server.register_function(name='get')
     def getVariable(varname):
@@ -92,15 +95,21 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
         return get_context().get_all_vals()
     
     @server.register_function(name='start_harvesting_data')
-    def start_harvesting_data(api_name,model,starting_node={}):
+    def start_harvesting_data(api_name,model,starting_node=None):
         for (k,v) in starting_node.items():
             get_context().set(k,v)
-        # - TODO: make a choice of a specific service name depending on the input model
-        # service_name = choose_service(context,model,schemas)
-        service_name = "service1" # make it work for now..
+        # - : make a choice of a specific service name depending on the input model
         #----------------------------------------------------------------
-        
-        available_workers[0]["client"].start_harvesting_data(api_name,service_name,model)
+        chosen_service = choose_service(api_name,schemas,model).partition(",")
+        if(not chosen_service):
+            return "Couldn't find a compatible extraction service"
+        service_name=chosen_service[0]
+        url = chosen_service[2]
+        try:
+            get_session(url).start_harvesting_data(api_name,service_name,model)
+        except BaseException as e:
+            return f"Error while starting job, {url}: {e}"
+        return "Job started successfully";
         #current_tasks is invloved
     
     @server.register_function(name='get_service')
@@ -131,7 +140,7 @@ with SimpleXMLRPCServer((SERVING_HOST, int(SERVING_PORT)),
             timer = threading.Timer(2.0, worker.start_downloading_images)
             timer.start()
             timers[str(index)] = timer
-        else: 
+        else:
             timer.start()
         return True
 
