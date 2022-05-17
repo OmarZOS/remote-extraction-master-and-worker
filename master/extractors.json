@@ -1,0 +1,234 @@
+{
+    "Twitter": [{
+        "variables": ["TwitterCredentials"],
+        "service1": {
+            "strategy": "querying",
+            "variables": ["Twitter_User_ID", "Follower_Count_Limit", "Friend_Count_Limit"],
+            "schema": {
+                "user": [
+                    "id",
+                    "id_str",
+                    "name",
+                    "screen_name",
+                    "location",
+                    "url",
+                    "description",
+                    "verified",
+                    "followers_count",
+                    "friends_count",
+                    "listed_count",
+                    "favourites_count",
+                    "statuses_count",
+                    "created_at",
+                    "utc_offset",
+                    "time_zone",
+                    "geo_enabled",
+                    "lang",
+                    "contributors_enabled",
+                    "is_translator",
+                    "default_profile",
+                    "following",
+                    "follow_request_sent",
+                    "notifications"
+                ],
+                "coordinates": [
+                    "coordinated",
+                    "type"
+                ],
+                "place": [
+                    "attributes",
+                    "bounding_box",
+                    "country",
+                    "country_code",
+                    "full_name",
+                    "id",
+                    "name",
+                    "place_type",
+                    "url"
+                ],
+                "entities": [
+                    "hashtags",
+                    "urls",
+                    "user_mentions",
+                    "symbols",
+                    "media"
+                ],
+                "media": [
+                    "id",
+                    "indices",
+                    "expanded_url",
+                    "type"
+                ],
+                "geo": [
+                    "type",
+                    "coordinates"
+                ],
+                "tweet": [
+                    "created_at",
+                    "id",
+                    "id_str",
+                    "full_text",
+                    "entities"
+                ]
+            }
+        }
+    }],
+    "Facebook": [{
+        "variables": ["FacebookCredentials"],
+        "service1": {
+            "strategy": "scrapping",
+            "schema": {
+                "profile": [
+                    "Friend_count",
+                    "Follower_count",
+                    "Following_count",
+                    "cover_photo_text",
+                    "cover_photo",
+                    "profile_picture",
+                    "id",
+                    "Name",
+                    "Contact Info",
+                    "Basic Info",
+                    "Relationship",
+                    "Life Events",
+                    "Friends"
+                ],
+                "post": [
+                    "post_id",
+                    "text",
+                    "post_text",
+                    "shared_text",
+                    "time",
+                    "timestamp",
+                    "image",
+                    "image_lowquality",
+                    "images",
+                    "images_description",
+                    "images_lowquality",
+                    "images_lowquality_description",
+                    "video",
+                    "video_duration_seconds",
+                    "video_height",
+                    "video_id",
+                    "video_quality",
+                    "video_size_MB",
+                    "video_thumbnail",
+                    "video_watches",
+                    "video_width",
+                    "likes",
+                    "comments",
+                    "shares",
+                    "post_url",
+                    "link",
+                    "links",
+                    "user_id",
+                    "username",
+                    "user_url",
+                    "is_live",
+                    "factcheck",
+                    "shared_post_id",
+                    "shared_time",
+                    "shared_user_id",
+                    "shared_username",
+                    "shared_post_url",
+                    "available",
+                    "comments_full",
+                    "reactors",
+                    "w3_fb_url",
+                    "reactions",
+                    "reaction_count",
+                    "with",
+                    "page_id",
+                    "sharers",
+                    "image_id",
+                    "image_ids",
+                    "was_live",
+                    "fetched_time"
+                ],
+                "group": [
+                    "group_id",
+                    "name",
+                    "description",
+                    "members"
+                ],
+                "comment": [
+                    "comment_id",
+                    "comment_url",
+                    "commenter_id",
+                    "commenter_url",
+                    "commenter_name",
+                    "commenter_meta",
+                    "comment_text",
+                    "comment_time",
+                    "comment_image",
+                    "comment_reactors",
+                    "comment_reactions",
+                    "comment_reaction_count",
+                    "replies"
+                ],
+                "comment_reply": [
+                    "comment_id",
+                    "comment_url",
+                    "commenter_id",
+                    "commenter_url",
+                    "commenter_name",
+                    "commenter_meta",
+                    "comment_text",
+                    "comment_time",
+                    "comment_image",
+                    "comment_reactors",
+                    "comment_reactions",
+                    "comment_reaction_count"
+                ]
+            }
+
+
+
+        }
+    }],
+    "Youtube": [{
+        "service1": {
+            "strategy": "querying",
+            "schema": {
+                "video": [
+                    "title",
+                    "description",
+                    "publishedAt",
+                    "channelId",
+                    "videoId",
+                    "channelTitle",
+                    "liveBroadcastContent"
+                ],
+                "playlist": [
+                    "title",
+                    "description",
+                    "publishedAt",
+                    "channelId",
+                    "playlistId"
+                ],
+                "channel": [
+                    "title",
+                    "description",
+                    "publishedAt",
+                    "channelId"
+                ],
+                "comment": [
+                    "id",
+                    "comment",
+                    "author",
+                    "likecount",
+                    "publishedAt"
+                ],
+                "comment_reply": [
+                    "parentId",
+                    "authorDisplayName",
+                    "replyComment",
+                    "publishedAt",
+                    "likeCount"
+                ]
+            }
+
+
+        }
+    }]
+}
